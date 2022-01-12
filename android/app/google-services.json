@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "598200007850",
+    "project_id": "microlearnable-b5a72",
+    "storage_bucket": "microlearnable-b5a72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598200007850:android:40061fff492204954724d3",
+        "android_client_info": {
+          "package_name": "com.b.biradar.google_ml_kit_example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598200007850-7r7mcjnb0hrg89mt8ei0ea7sdgsj7l30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU1I_YyATGvHH3rKRV2jqEp4c5lSG62fQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598200007850-7r7mcjnb0hrg89mt8ei0ea7sdgsj7l30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598200007850:android:1a8aeb383fe12e724724d3",
+        "android_client_info": {
+          "package_name": "com.google.mlkit.vision.DEPENDENCIES"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598200007850-7r7mcjnb0hrg89mt8ei0ea7sdgsj7l30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU1I_YyATGvHH3rKRV2jqEp4c5lSG62fQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598200007850-7r7mcjnb0hrg89mt8ei0ea7sdgsj7l30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
