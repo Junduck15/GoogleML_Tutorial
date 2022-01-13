@@ -40,7 +40,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
+    
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -50,7 +50,8 @@ android {
     }
 
     dependencies {
-        implementation platform('com.google.firebase:firebase-bom:28.1.0')
+        implementation platform('com.google.firebase:firebase-bom:29.0.3')
+        // implementation platform('com.google.firebase:firebase-bom:28.1.0')
     }
 
     aaptOptions {

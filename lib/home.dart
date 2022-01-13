@@ -1,12 +1,14 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:async';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_ml_kit_example/text_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:ui' as ui;
+import 'package:firebase/firebase_io.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,10 +21,12 @@ class HomePage extends StatefulWidget {
 class CameraWidgetState extends State {
   PickedFile? imageFile = null;
   StreamController<String> streamController = StreamController<String>();
+  StreamController<String> poseStreamController = StreamController<String>();
+  String? tp;
   String? temp;
   List? pose_x;
   List? pose_y;
-
+  File? _uploadImg;
   List<Pose>? _poses;
   List<Face>? _faces;
   String? pos;
@@ -105,6 +109,14 @@ class CameraWidgetState extends State {
               textColor: Colors.white,
               color: Colors.lightBlueAccent,
               onPressed: () {
+                uploadImage(imageFile!.path);
+              },
+              child: Text("Upload Image"),
+            ),
+            MaterialButton(
+              textColor: Colors.white,
+              color: Colors.lightBlueAccent,
+              onPressed: () {
                 setState(() {
                   getText(imageFile!);
                 });
@@ -140,9 +152,21 @@ class CameraWidgetState extends State {
                     ))
                 : Text('Face Recognization Ready'),
             StreamBuilder(
+              stream: poseStreamController.stream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data.toString(),
+                    style: TextStyle(fontSize: 12),
+                  );
+                } else {
+                  return Text('Pose Recogniation Ready');
+                }
+              },
+            ),
+            StreamBuilder(
               stream: streamController.stream,
               builder: (context, snapshot) {
-                // step 4: use the streamed data
                 if (snapshot.hasData) {
                   return Text(
                     snapshot.data.toString(),
@@ -159,11 +183,29 @@ class CameraWidgetState extends State {
     );
   }
 
+  Future<void> uploadImage(String imageUrl) async {
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('MLKits') //'post'라는 folder를 만들고
+        .child('${DateTime.now().millisecondsSinceEpoch}.png');
+
+    // 파일 업로드
+    final uploadTask = firebaseStorageRef.putFile(
+        _uploadImg!, SettableMetadata(contentType: 'image/png'));
+
+    // 완료까지 기다림
+    await uploadTask.whenComplete(() => null);
+
+    // 업로드 완료 후 url
+    final downloadUrl = await firebaseStorageRef.getDownloadURL();
+  }
+
   void _openGallery(BuildContext context) async {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
     setState(() {
+      _uploadImg = File(pickedFile!.path);
       imageFile = pickedFile!;
     });
 
@@ -205,9 +247,15 @@ class CameraWidgetState extends State {
     final poseDetector = GoogleMlKit.vision.poseDetector();
     _poses = await poseDetector.processImage(inputImage);
     _loadImage((File(img.path)));
+    tp = '';
     for (Pose pose in _poses!) {
       pose.landmarks.forEach((key, value) {
         print(value.x);
+        tp = tp.toString() + value.x.toString();
+        poseStreamController.add(tp.toString());
+        // pose_x?.add(value.x);
+        // pose_y?.add(value.y);
+
         print(value.y);
       });
     }
